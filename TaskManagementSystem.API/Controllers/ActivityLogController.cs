@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.Core.Services.interfaces;
 
@@ -7,7 +6,7 @@ namespace TaskManagementSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class ActivityLogController : ControllerBase
     {
         private readonly IActivityService activityService;
@@ -28,7 +27,7 @@ namespace TaskManagementSystem.API.Controllers
         public IActionResult GetById(int Id)
         {
             var result = activityService.GetActivityById(Id);
-            if(result == null)
+            if (result == null)
                 return NotFound();
             return Ok(result);
         }

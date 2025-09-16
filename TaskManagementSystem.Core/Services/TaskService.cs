@@ -22,11 +22,11 @@ namespace TaskManagementSystem.Core.Services
             var user = await unitOfWork.Users.GetByID(taskDTO.UserID);
             if (user == null)
                 return "User Not Found";
-            
+
             var project = unitOfWork.Projects.GetByID(taskDTO.ProjectID);
             if (project == null)
                 return "Project Not Found";
-            
+
             if (taskDTO.StartDate > taskDTO.DueDate)
                 return "Error end date must be after start date";
 
@@ -35,7 +35,7 @@ namespace TaskManagementSystem.Core.Services
                 taskPriority = TaskPriority.Medium;
             else if (taskDTO.Priority == TaskPriority.High.ToString())
                 taskPriority = TaskPriority.High;
-            else 
+            else
                 taskPriority = TaskPriority.Low;
 
             Models.Task task = new Models.Task
@@ -53,11 +53,11 @@ namespace TaskManagementSystem.Core.Services
             };
             unitOfWork.Tasks.Add(task);
             unitOfWork.save();
-            if(user.Tasks == null)
-                user.Tasks = new List<Models.Task>();
-            user.Tasks.Add(task);
-            unitOfWork.save();
-            projectServices.AssignToTask(task.ProjectID, task);
+            //if(user.Tasks == null)
+            //    user.Tasks = new List<Models.Task>();
+            //user.Tasks.Add(task);
+            //unitOfWork.save();
+            //projectServices.AssignToTask(task.ProjectID, task);
             var activity = new ActivityLogDTO
             {
                 Action = $"Task Assigned To User {user.UserName}",
@@ -81,9 +81,9 @@ namespace TaskManagementSystem.Core.Services
         {
             var tasks = unitOfWork.Tasks.GetAll();
             var result = new List<TaskDTO>();
-            foreach(var task in tasks)
+            foreach (var task in tasks)
             {
-                TaskDTO taskDTO = new TaskDTO 
+                TaskDTO taskDTO = new TaskDTO
                 {
                     Name = task.Name,
                     Description = task.Description,
@@ -158,7 +158,7 @@ namespace TaskManagementSystem.Core.Services
                     Priority = task.Priority.ToString(),
                     UserID = task.UserID
                 };
-                result.Add(taskDTO );
+                result.Add(taskDTO);
             }
             return result;
         }
@@ -167,7 +167,7 @@ namespace TaskManagementSystem.Core.Services
         {
             var oldTask = unitOfWork.Tasks.GetByID(id);
 
-            if(oldTask == null)
+            if (oldTask == null)
                 return "Task Not Found";
 
             if (taskDTO.UserID == null)
@@ -204,7 +204,7 @@ namespace TaskManagementSystem.Core.Services
             unitOfWork.Tasks.Update(oldTask);
             unitOfWork.save();
             return null;
-            
+
         }
 
         public async Task<string> AssignTaskToUser(string userId, int taskId)
@@ -215,7 +215,7 @@ namespace TaskManagementSystem.Core.Services
             var task = unitOfWork.Tasks.GetByID(taskId);
             if (task == null)
                 return "TaskNotFound";
-            if(user.Tasks == null)
+            if (user.Tasks == null)
                 user.Tasks = new List<Models.Task>();
             user.Tasks.Add(task);
             task.User = user;
