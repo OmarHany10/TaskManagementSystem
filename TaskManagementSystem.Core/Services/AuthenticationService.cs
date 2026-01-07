@@ -75,7 +75,7 @@ namespace TaskManagementSystem.Core.Services
         {
             ApplicationUser user = await userManager.FindByEmailAsync(loginDTO.Email);
             if (user == null)
-                await userManager.FindByNameAsync(loginDTO.Email);
+                user = await userManager.FindByNameAsync(loginDTO.Email);
 
             if (user is null || !await userManager.CheckPasswordAsync(user, loginDTO.Password))
             {

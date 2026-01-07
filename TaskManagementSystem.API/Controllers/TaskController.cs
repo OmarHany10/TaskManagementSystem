@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Core.Services.interfaces;
 
@@ -99,7 +97,7 @@ namespace TaskManagementSystem.API.Controllers
         public async Task<IActionResult> Add(TaskDTO taskDTO)
         {
             var result = await taskService.Add(taskDTO);
-            if(result != null)
+            if (result != null)
                 return BadRequest(result);
             return Ok(taskDTO);
         }
@@ -109,7 +107,7 @@ namespace TaskManagementSystem.API.Controllers
         public async Task<IActionResult> Update(int Id, TaskDTO taskDTO)
         {
             var result = await taskService.Update(Id, taskDTO);
-            if(result != null)
+            if (result != null)
                 return BadRequest(result);
             return Ok(taskDTO);
         }
@@ -119,7 +117,7 @@ namespace TaskManagementSystem.API.Controllers
         public IActionResult Delete(int Id)
         {
             var result = taskService.Delete(Id);
-            if(result==0)
+            if (result == 0)
                 return NotFound();
             return Ok();
         }
@@ -134,12 +132,12 @@ namespace TaskManagementSystem.API.Controllers
                 return BadRequest(result);
             return Ok(result);
         }
-        
+
         [HttpPost("FinishTask")]
         public IActionResult FinishTask(int taskId)
         {
-            var result =  taskService.FinishTheTask(taskId);
-            if(result == "Task Not Found")
+            var result = taskService.FinishTheTask(taskId);
+            if (result == "Task Not Found")
                 return NotFound();
             if (result == "Task Already Finished")
                 return BadRequest(result);
